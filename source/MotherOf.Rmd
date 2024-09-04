@@ -1,0 +1,101 @@
+---
+title: "The Mother of all RMarkdown Files"
+author: "Falk Mielke"
+date: "2024-09-03"
+output: md_document
+---
+
+<!-- https://stackoverflow.com/questions/40717410/opts-knitsetroot-dir-path-does-not-work-after-rstudio-upgrade-1-0-44 -->
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+require('rprojroot')
+require('here')
+print(here())
+print(find_root(is_rstudio_project))
+knitr::opts_knit$set(root.dir = normalizePath(find_root(is_rstudio_project)))
+knitr::opts_chunk$set(root.dir = normalizePath(find_root(is_rstudio_project)))
+```
+
+# Conventional Navigation
+With the help of `rprojroot`, we can find the root folder of the package.
+
+```{r}
+require('rprojroot')
+find_root(is_rstudio_project)
+```
+
+
+Let's use a function to print the current directory and the content of a `location.txt` file.
+
+```{r}
+CheckDirectory <- function () {
+  print(getwd()) # display the working directory
+  
+  fi = 'location.txt'
+  if (file.exists(fi)) {
+    print(readLines(fi))
+  }
+}
+
+CheckDirectory()
+```
+
+
+Attempt to walk to the "source" subfolder:
+```{r}
+tryCatch(
+{setwd('source')
+CheckDirectory()},
+        error = function(cond) {
+            message(paste('error:', conditionMessage(cond)))
+            return(NA)
+        }
+)
+
+```
+This gives a warning:
+> Warning: The working directory was changed to /data/R/wd_testing/source inside a notebook chunk. 
+> The working directory will be reset when the chunk is finished running.
+> Use the knitr root.dir option in the setup chunk to change the working directory for notebook chunks.
+
+
+... and then to the "data" subfolder:
+```{r}
+tryCatch(
+{setwd('../data')
+CheckDirectory()},
+        error = function(cond) {
+            message(paste('error:', conditionMessage(cond)))
+            return(NA)
+        }
+)
+```
+
+
+Finally, back to the roots:
+```{r}
+setwd('..')
+CheckDirectory()
+```
+
+(... this is unexpected; I would not want to walk out of the project folder.)
+
+
+Go back to the root:
+```{r}
+setwd(find_root(is_rstudio_project))
+```
+
+# Using the `here` Package
+I found [https://here.r-lib.org](this) on reddit:
+
+```{r}
+require('here')
+here()
+```
+
+```{r}
+here('source', 'location.txt')
+```
