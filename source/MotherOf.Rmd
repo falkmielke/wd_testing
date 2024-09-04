@@ -10,12 +10,10 @@ output: md_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-require('rprojroot')
-require('here')
-print(here())
-print(find_root(is_rstudio_project))
-knitr::opts_knit$set(root.dir = normalizePath(find_root(is_rstudio_project)))
-knitr::opts_chunk$set(root.dir = normalizePath(find_root(is_rstudio_project)))
+print(here::here())
+print(rprojroot::find_root(rprojroot::is_rstudio_project))
+knitr::opts_knit$set(root.dir = normalizePath(rprojroot::find_root(rprojroot::is_rstudio_project)))
+knitr::opts_chunk$set(root.dir = normalizePath(rprojroot::find_root(rprojroot::is_rstudio_project)))
 ```
 
 # Conventional Navigation

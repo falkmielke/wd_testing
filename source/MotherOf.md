@@ -6,6 +6,9 @@ With the help of `rprojroot`, we can find the root folder of the
 package.
 
     require('rprojroot')
+
+    ## Loading required package: rprojroot
+
     find_root(is_rstudio_project)
 
     ## [1] "/data/R/wd_testing"
@@ -81,6 +84,11 @@ Go back to the root:
 I found [https://here.r-lib.org](this) on reddit:
 
     require('here')
+
+    ## Loading required package: here
+
+    ## here() starts at /data/R/wd_testing
+
     here()
 
     ## [1] "/data/R/wd_testing"
